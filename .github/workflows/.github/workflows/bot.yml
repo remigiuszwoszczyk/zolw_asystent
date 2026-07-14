@@ -1,0 +1,31 @@
+name: Bot Tradingowy
+on:
+  schedule:
+    - cron: '5 1,5,9,13,17,21 * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: Konfiguracja Pythona
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Instalacja bibliotek
+        run: pip install requests pandas
+      - name: Uruchomienie bota
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python bot_zolw.py
+      - name: Zapisanie stanu
+        run: |
+          git config --global user.name "Bot"
+          git config --global user.email "bot@email.com"
+          git add stan_pozycji_zolwia.json
+          git commit -m "Aktualizacja stanu bota" || echo "Brak zmian do zapisu"
+          git push
