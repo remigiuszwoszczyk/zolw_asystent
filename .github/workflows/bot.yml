@@ -1,7 +1,7 @@
 name: Bot Tradingowy
 on:
   schedule:
-    - cron: '5 1,5,9,13,17,21 * * *'
+    - cron: '5 22,2,6,10,14,18 * * *'
   workflow_dispatch:
 
 jobs:
