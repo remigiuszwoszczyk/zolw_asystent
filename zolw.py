@@ -233,8 +233,16 @@ def analizuj_rynek():
                 
             elif wymus_wysylke:
                 zysk_proc = sum([(cena_dzis - w) / w for w in stan["transze"] if w > 0]) / liczba_transz * 100
+                low_10 = float(ostatnia_swieca['Low_10'])
+                sl_sztywny = stan["stop_loss"]
+                sl_aktualny = max(sl_sztywny, low_10)
+                zrodlo_sl = "Kanał 10D" if low_10 > sl_sztywny else "Początkowy (2*ATR)"
+                
                 wiadomosc = (f"📈 *DOBOWY RAPORT: LONG W TOKU ({TICKER})*\n"
-                             f"Aktualny wynik serii: `{zysk_proc:+.2f}%`")
+                             f"Aktualny wynik serii: `{zysk_proc:+.2f}%`\n"
+                             f"Aktualny Stop Loss: `{sl_aktualny:,.2f} USD`\n"
+                             f"Źródło ochrony: `{zrodlo_sl}`\n"
+                             f"*(Sztywny: {sl_sztywny:,.2f} | Kanał: {low_10:,.2f})*")
 
         elif stan["kierunek"] == "SHORT":
             high_10 = float(ostatnia_swieca['High_10'])
@@ -262,8 +270,16 @@ def analizuj_rynek():
                 
             elif wymus_wysylke:
                 zysk_proc = sum([(w - cena_dzis) / w for w in stan["transze"] if w > 0]) / liczba_transz * 100
+                high_10 = float(ostatnia_swieca['High_10'])
+                sl_sztywny = stan["stop_loss"]
+                sl_aktualny = min(sl_sztywny, high_10)
+                zrodlo_sl = "Kanał 10D" if high_10 < sl_sztywny else "Początkowy (2*ATR)"
+                
                 wiadomosc = (f"📉 *DOBOWY RAPORT: SHORT W TOKU ({TICKER})*\n"
-                             f"Aktualny wynik serii: `{zysk_proc:+.2f}%`")
+                             f"Aktualny wynik serii: `{zysk_proc:+.2f}%`\n"
+                             f"Aktualny Stop Loss: `{sl_aktualny:,.2f} USD`\n"
+                             f"Źródło ochrony: `{zrodlo_sl}`\n"
+                             f"*(Sztywny: {sl_sztywny:,.2f} | Kanał: {high_10:,.2f})*")
 
     zapisz_stan(stan)
     ping_healthcheck()
