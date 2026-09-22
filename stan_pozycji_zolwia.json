@@ -1,8 +1,10 @@
 {
-    "status": "BRAK_POZYCJI",
-    "kierunek": null,
-    "transze": [],
-    "stop_loss": 0.0,
-    "data_wejscia": null,
-    "ostatni_raport_dobowy": "2026-09-21"
+    "status": "W_POZYCJI",
+    "kierunek": "LONG",
+    "transze": [
+        86220.6
+    ],
+    "stop_loss": 81281.07142857143,
+    "data_wejscia": "2026-09-22",
+    "ostatni_raport_dobowy": "2026-09-22"
 }
